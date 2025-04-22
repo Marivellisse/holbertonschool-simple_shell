@@ -1,7 +1,8 @@
 #include "main.h"
 
 /**
- * main - Entry point of shell
+ * main - Entry point for the simple shell
+ *
  * Return: Always 0
  */
 int main(void)
@@ -14,15 +15,12 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ "); /* prompt */
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "$ ", 2);
 
 		read = getline(&line, &len, stdin);
 		if (read == -1)
-		{
-			printf("End of file or error.\n");
-			free(line);
 			break;
-		}
 
 		if (line[read - 1] == '\n')
 			line[read - 1] = '\0';
@@ -49,6 +47,7 @@ int main(void)
 			wait(NULL);
 		}
 	}
+
 	free(line);
 	return (0);
 }
