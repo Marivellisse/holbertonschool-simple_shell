@@ -8,6 +8,10 @@
 #include <sys/wait.h>
 
 void execute_command(char *argv[]);
+char *find_in_path(char *cmd);
+
+char *_build_full_path(char *dir, char *cmd);
+
 
 extern char **environ;
 
