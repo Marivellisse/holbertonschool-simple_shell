@@ -40,7 +40,11 @@ char *find_in_path(char *cmd)
 		return (strdup(cmd));
 
 	path = getenv("PATH");
-	if (!path || !(path = strdup(path))
+	if (!path)
+		return (NULL);
+
+	path = strdup(path);
+	if (!path)
 		return (NULL);
 
 	token = strtok(path, ":");
