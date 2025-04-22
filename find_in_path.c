@@ -40,14 +40,11 @@ char *find_in_path(char *cmd)
 		return (strdup(cmd));
 
 	path = getenv("PATH");
-	if (!path)
-		return (NULL);
-
-	path = strdup(path);
-	if (!path)
+	if (!path || !(path = strdup(path))
 		return (NULL);
 
 	token = strtok(path, ":");
+
 	while (token)
 	{
 		full_path = _build_full_path(token, cmd);
@@ -56,13 +53,15 @@ char *find_in_path(char *cmd)
 			free(path);
 			return (NULL);
 		}
+
 		if (stat(full_path, &st) == 0)
 		{
 			free(path);
 			return (full_path);
 		}
+
 		free(full_path);
-		token = strtok(NULL, ":");
+		token = strtok(path, ":");
 	}
 
 	free(path);

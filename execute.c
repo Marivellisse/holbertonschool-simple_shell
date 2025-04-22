@@ -3,7 +3,7 @@
 
 /**
  * execute_command - Forks and executes a command
- * @argv: Argument vector with command and NULL
+ * @argv: Argument vector
  */
 void execute_command(char *argv[])
 {
@@ -24,6 +24,7 @@ void execute_command(char *argv[])
 		free(cmd_path);
 		return;
 	}
+
 	if (pid == 0)
 	{
 		if (execve(cmd_path, argv, environ) == -1)
