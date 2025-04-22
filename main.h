@@ -7,6 +7,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+void execute_command(char *argv[]);
+
 extern char **environ;
 
 #endif
