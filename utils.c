@@ -34,4 +34,48 @@ char *trim_whitespace(char *str)
 	end[1] = '\0';
 	return (str);
 }
+#include "simple_shell.h"
+
+/**
+ * tokenize_input - Tokenizes input line into args
+ * @line: input string
+ *
+ * Return: NULL-terminated array of strings
+ */
+char **tokenize_input(char *line)
+{
+	char *token;
+	char **args;
+	int i = 0;
+
+	args = malloc(64 * sizeof(char *));
+	if (!args)
+		return (NULL);
+
+	token = strtok(line, " ");
+	while (token)
+	{
+		args[i++] = strdup(token);
+		token = strtok(NULL, " ");
+	}
+	args[i] = NULL;
+	return (args);
+}
+
+/**
+ * free_args - Frees memory for args
+ * @args: NULL-terminated array of strings
+ */
+void free_args(char **args)
+{
+	int i;
+
+	if (!args)
+		return;
+
+	for (i = 0; args[i]; i++)
+		free(args[i]);
+
+	free(args);
+}
 

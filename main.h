@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void execute_command(char *argv[]);
+void execute_command(char **args, char *path);
 char *find_in_path(char *cmd);
 
 char *_build_full_path(char *dir, char *cmd);

@@ -71,4 +71,50 @@ char *find_in_path(char *cmd)
 	free(path);
 	return (NULL);
 }
+#include "simple_shell.h"
+
+/**
+ * find_full_path - Search for a command in PATH
+ * @command: command name (e.g. ls)
+ *
+ * Return: malloc'd full path or NULL
+ */
+char *find_full_path(char *command)
+{
+	char *path, *token, *full_path;
+	struct stat st;
+	char *path_dup;
+
+	if (strchr(command, '/'))
+		return (strdup(command));
+
+	path = getenv("PATH");
+	if (!path)
+		return (NULL);
+
+	path_dup = strdup(path);
+	if (!path_dup)
+		return (NULL);
+
+	token = strtok(path_dup, ":");
+	while (token)
+	{
+		full_path = malloc(strlen(token) + strlen(command) + 2);
+		if (!full_path)
+		{
+			free(path_dup);
+			return (NULL);
+		}
+		sprintf(full_path, "%s/%s", token, command);
+		if (stat(full_path, &st) == 0)
+		{
+			free(path_dup);
+			return (full_path);
+		}
+		free(full_path);
+		token = strtok(NULL, ":");
+	}
+	free(path_dup);
+	return (NULL);
+}
 

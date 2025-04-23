@@ -18,7 +18,7 @@ int handle_builtin(char **args);
 void free_args(char **args);
 void handle_input(void);
 /* En simple_shell.h */
-void execute_command(char **args);
+void execute_command(char **args,char *path);
 
 
 #endif /* SIMPLE_SHELL_H */
