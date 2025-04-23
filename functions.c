@@ -91,7 +91,6 @@ void handle_input(void)
 
 	if (strcmp(args[0], "exit") == 0)
 	{
-		free(path);
 		free(args);
 		free(buf);
 		exit(0);
