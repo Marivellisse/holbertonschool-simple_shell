@@ -24,8 +24,13 @@ void handle_input(void);
 char **parse_input(char *buf);
 void execute_command(char **args, char *path);
 void handle_env(void);
+void handle_input(void);
+void execute_command(char **args, char *path);
+char **parse_input(char *buf);
+char *get_file_path(char *command); /* o find_full_path */
+void handle_env(void);
 
-/* ======= FUNCTIONS 2 ======= */
+
 int check_exit(char *command);
 int isAbsolutePath(const char *str);
 char *get_file_loc(char *path, char *file_name);

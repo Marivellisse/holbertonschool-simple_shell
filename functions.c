@@ -7,7 +7,6 @@
  *
  * Return: The length of the initial substring.
  */
-
 size_t _strcspn(const char *s, const char *accept)
 {
 	size_t i = 0;
@@ -15,12 +14,9 @@ size_t _strcspn(const char *s, const char *accept)
 	while (s[i] != '\0')
 	{
 		if (strchr(accept, s[i]) != NULL)
-		{
 			return (i);
-		}
 		i++;
 	}
-
 	return (i);
 }
 
@@ -73,20 +69,17 @@ void execute_command(char **args, char *path)
 
 	if (pid == 0)
 	{
-		/* Child process: execute the command */
 		if (execve(path, args, environ) == -1)
 		{
 			perror("execve");
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 	}
 	else
 	{
-		/* Parent process: wait for the child */
 		wait(NULL);
 	}
 }
-
 
 /**
  * handle_input - Handles user input, parses it, and executes the command
@@ -100,9 +93,7 @@ void handle_input(void)
 	char *path;
 
 	if (isatty(STDIN_FILENO))
-	{
 		printf("#cisfun$ ");
-	}
 
 	nread = getline(&buf, &count, stdin);
 	if (nread == -1)
@@ -110,7 +101,14 @@ void handle_input(void)
 		free(buf);
 		exit(0);
 	}
+
 	args = parse_input(buf);
+	if (!args || !args[0])
+	{
+		free(args);
+		free(buf);
+		return;
+	}
 
 	path = get_file_path(args[0]);
 
@@ -121,14 +119,23 @@ void handle_input(void)
 		free(buf);
 		exit(0);
 	}
-
 	else if (strcmp(args[0], "env") == 0)
 	{
 		handle_env();
 	}
-	execute_command(args, path);
+	else if (!path)
+	{
+		fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
+		free(args);
+		free(buf);
+		exit(127);
+	}
+	else
+	{
+		execute_command(args, path);
+		free(path);
+	}
 
-	free(path);
 	free(buf);
 	free(args);
 }
@@ -139,9 +146,8 @@ void handle_input(void)
 void handle_env(void)
 {
 	char **env = environ;
-	unsigned int i;
+	unsigned int i = 0;
 
-	i = 0;
 	while (env[i] != NULL)
 	{
 		printf("%s\n", env[i]);

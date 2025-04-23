@@ -9,6 +9,7 @@
 
 void execute_command(char **args, char *path);
 char *find_in_path(char *cmd);
+void handle_input(void);
 
 char *_build_full_path(char *dir, char *cmd);
 
