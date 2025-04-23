@@ -102,6 +102,9 @@ void handle_input(void)
 		exit(0);
 	}
 
+	if (buf[nread - 1] == '\n')
+		buf[nread - 1] = '\0'; /* ✅ Eliminamos el newline para evitar errores */
+
 	args = parse_input(buf);
 	if (!args || !args[0])
 	{
