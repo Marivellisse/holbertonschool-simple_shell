@@ -56,30 +56,7 @@ char **parse_input(char *buf)
  * @args: Tokenized command (e.g. {"ls", "-l", NULL})
  * @path: Full path to the executable (e.g. "/bin/ls")
  */
-void execute_command(char **args, char *path)
-{
-	pid_t pid;
 
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		return;
-	}
-
-	if (pid == 0)
-	{
-		if (execve(path, args, environ) == -1)
-		{
-			perror("execve");
-			exit(127);
-		}
-	}
-	else
-	{
-		wait(NULL);
-	}
-}
 
 /**
  * handle_input - Handles user input, parses it, and executes the command
@@ -152,6 +129,33 @@ void handle_env(void)
 	{
 		printf("%s\n", env[i]);
 		i++;
+	}
+}
+void execute_command(char **args, char *path)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return;
+	}
+
+	if (pid == 0)
+	{
+		/* Child process */
+		if (execve(path, args, environ) == -1)
+		{
+			perror("execve");
+			exit(127); /* ✅ MUY IMPORTANTE: aquí debe ir el código 127 */
+		}
+	}
+	else
+	{
+		int status;
+
+		wait(&status); /* Espera al hijo y recoge su status */
 	}
 }
 
