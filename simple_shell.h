@@ -11,10 +11,15 @@
 
 extern char **environ;
 
+/* Prototypes */
 char **tokenize_input(char *line);
 char *find_full_path(char *command);
 int handle_builtin(char **args);
 void free_args(char **args);
+void handle_input(void);
+/* En simple_shell.h */
+void execute_command(char **args);
+
 
 #endif /* SIMPLE_SHELL_H */
 
