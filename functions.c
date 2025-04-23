@@ -142,7 +142,7 @@ void handle_input(void)
 }
 
 /**
- * handle_env - Function that handles the environment
+ * handle_env - Prints the current environment
  */
 void handle_env(void)
 {
