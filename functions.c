@@ -56,7 +56,30 @@ char **parse_input(char *buf)
  * @args: Tokenized command (e.g. {"ls", "-l", NULL})
  * @path: Full path to the executable (e.g. "/bin/ls")
  */
+void execute_command(char **args, char *path)
+{
+	pid_t pid = fork();
 
+	if (pid == -1)
+	{
+		perror("fork");
+		return;
+	}
+
+	if (pid == 0)
+	{
+		if (execve(path, args, environ) == -1)
+		{
+			perror("execve");
+			exit(127);
+		}
+	}
+	else
+	{
+		int status;
+		wait(&status);
+	}
+}
 
 /**
  * handle_input - Handles user input, parses it, and executes the command
@@ -87,33 +110,35 @@ void handle_input(void)
 		return;
 	}
 
-	path = get_file_path(args[0]);
-
 	if (strcmp(args[0], "exit") == 0)
 	{
 		free(args);
 		free(buf);
 		exit(0);
 	}
-	else if (strcmp(args[0], "env") == 0)
+
+	if (strcmp(args[0], "env") == 0)
 	{
 		handle_env();
+		free(args);
+		free(buf);
+		return;
 	}
-	else if (!path)
+
+	path = get_file_path(args[0]);
+	if (!path)
 	{
 		fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
 		free(args);
 		free(buf);
 		exit(127);
 	}
-	else
-	{
-		execute_command(args, path);
-		free(path);
-	}
 
-	free(buf);
+	execute_command(args, path);
+
+	free(path);
 	free(args);
+	free(buf);
 }
 
 /**
@@ -128,33 +153,6 @@ void handle_env(void)
 	{
 		printf("%s\n", env[i]);
 		i++;
-	}
-}
-void execute_command(char **args, char *path)
-{
-	pid_t pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		return;
-	}
-
-	if (pid == 0)
-	{
-		/* Child process */
-		if (execve(path, args, environ) == -1)
-		{
-			perror("execve");
-			exit(127); /* ✅ MUY IMPORTANTE: aquí debe ir el código 127 */
-		}
-	}
-	else
-	{
-		int status;
-
-		wait(&status); /* Espera al hijo y recoge su status */
 	}
 }
 
