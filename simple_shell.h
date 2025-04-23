@@ -17,6 +17,9 @@ char *find_full_path(char *command);
 int handle_builtin(char **args);
 void free_args(char **args);
 void handle_input(void);
+char *_getenv(const char *name);
+char *find_full_path(char *command);
+
 /* En simple_shell.h */
 void execute_command(char **args,char *path);
 

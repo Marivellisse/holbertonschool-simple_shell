@@ -82,27 +82,7 @@ char *get_file_loc(char *path, char *file_name)
 	return (NULL);
 }
 
-/**
- * _getenv - Function that works just like getenv
- * @name: The name of the environment.
- *
- * Return: 0
- */
 
-char *_getenv(const char *name)
-{
-	char **env = environ;
-
-	for (; *env != NULL; ++env)
-	{
-		if (strncmp(*env, name, strlen(name)) == 0 && (*env)[strlen(name)] == '=')
-		{
-			return (*env + strlen(name) + 1);
-		}
-	}
-
-	return (NULL);
-}
 
 /**
  * get_file_path - Get's the full path of the file

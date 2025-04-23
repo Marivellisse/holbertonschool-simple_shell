@@ -1,77 +1,22 @@
-#include "main.h"
-#include <string.h>
-#include <stdlib.h>
-#include <sys/stat.h>
+#include "simple_shell.h"
 
 /**
- * _build_full_path - Concatenates dir and cmd into a full path
- * @dir: Directory path
- * @cmd: Command name
- * Return: Full path (must be freed), or NULL
+ * _getenv - Custom implementation of getenv (only for PATH)
+ * @name: Name of the variable (e.g., "PATH")
+ * Return: Pointer to value string, or NULL
  */
-char *_build_full_path(char *dir, char *cmd)
+char *_getenv(const char *name)
 {
-	int len;
-	char *full_path;
+	int i;
+	size_t len = strlen(name);
 
-	len = strlen(dir) + strlen(cmd) + 2;
-	full_path = malloc(len);
-	if (!full_path)
-		return (NULL);
-
-	snprintf(full_path, len, "%s/%s", dir, cmd);
-	return (full_path);
-}
-
-/**
- * find_in_path - Finds the full path of a command using PATH env
- * @cmd: Command name (e.g., "ls")
- * Return: Full path if found (malloc'd), else NULL
- */
-char *find_in_path(char *cmd)
-{
-	char *path, *token, *full_path;
-	struct stat st;
-
-	if (!cmd || *cmd == '\0')
-		return (NULL);
-
-	if (strchr(cmd, '/'))
-		return (strdup(cmd));
-
-	path = getenv("PATH");
-	if (!path)
-		return (NULL);
-
-	path = strdup(path);
-	if (!path)
-		return (NULL);
-
-	token = strtok(path, ":");
-
-	while (token)
+	for (i = 0; environ[i]; i++)
 	{
-		full_path = _build_full_path(token, cmd);
-		if (!full_path)
-		{
-			free(path);
-			return (NULL);
-		}
-
-		if (stat(full_path, &st) == 0)
-		{
-			free(path);
-			return (full_path);
-		}
-
-		free(full_path);
-		token = strtok(path, ":");
+		if (strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
+			return (environ[i] + len + 1);
 	}
-
-	free(path);
 	return (NULL);
 }
-#include "simple_shell.h"
 
 /**
  * find_full_path - Search for a command in PATH
@@ -88,7 +33,7 @@ char *find_full_path(char *command)
 	if (strchr(command, '/'))
 		return (strdup(command));
 
-	path = getenv("PATH");
+	path = _getenv("PATH");
 	if (!path)
 		return (NULL);
 
