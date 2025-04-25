@@ -1,5 +1,5 @@
 #include <string.h>
-#include "utils.h"
+#include "shell.h"
 
 /**
  * _isspace - Checks if a character is a whitespace

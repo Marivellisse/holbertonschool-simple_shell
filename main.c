@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 #include "simple_shell.h"
 
 /**

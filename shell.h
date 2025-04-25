@@ -1,8 +1,7 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-/* ======= LIBRARIES ======= */
-
+/* === STANDARD LIBRARIES === */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,29 +11,30 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-/* ======= GLOBAL VARIABLES ======= */
-
+/* === GLOBAL VARIABLES === */
 extern char **environ;
 
-/* ======= PROTOTYPES ======= */
+/* === FUNCTION PROTOTYPES === */
 
-/* ======= FUNCTIONS 1 ======= */
-size_t _strcspn(const char *s, const char *accept);
-void handle_input(void);
-char **parse_input(char *buf);
-void execute_command(char **args, char *path);
-void handle_env(void);
+/* Shell core */
 void handle_input(void);
 void execute_command(char **args, char *path);
 char **parse_input(char *buf);
-char *get_file_path(char *command); /* o find_full_path */
+
+/* Built-ins */
 void handle_env(void);
 
-
-int check_exit(char *command);
-int isAbsolutePath(const char *str);
+char *find_in_path(char *cmd);
+char *_build_full_path(char *dir, char *cmd);
+char *get_file_path(char *file_name);
 char *get_file_loc(char *path, char *file_name);
 char *_getenv(const char *name);
-char *get_file_path(char *file_name);
+int isAbsolutePath(const char *str);
+int check_exit(char *command);
 
-#endif
+size_t _strcspn(const char *s, const char *accept);
+char *trim_whitespace(char *str);
+int _isspace(char c);
+
+#endif /* SHELL_H */
+

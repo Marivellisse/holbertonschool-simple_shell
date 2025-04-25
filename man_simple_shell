@@ -1,0 +1,60 @@
+.TH HSH 1 "April 2025" "Holberton School" "User Commands"
+.SH NAME
+hsh \- simple UNIX command line interpreter
+
+.SH SYNOPSIS
+.B hsh
+
+.SH DESCRIPTION
+.B hsh
+is a basic UNIX command line interpreter built as a project for Holberton School. It mimics the behavior of standard shells such as `sh` or `bash`, but with limited features for educational purposes.
+
+.PP
+The shell operates by reading a line of input, parsing it into tokens, and executing the command in a new process. It supports both absolute and relative paths, as well as built-in commands.
+
+.SH FEATURES
+.TP
+.B Interactive mode
+Displays a prompt (`#cisfun$`) and waits for user input.
+
+.TP
+.B Non-interactive mode
+Reads commands from standard input when piped or redirected.
+
+.TP
+.B Built-in commands
+.IP \(bu
+exit: exits the shell.
+.IP \(bu
+env: prints the current environment.
+
+.TP
+.B External commands
+Executes any binary file accessible through the `PATH` variable using `execve()`.
+
+.TP
+.B Error handling
+Prints error messages when a command is not found or fails to execute.
+
+.SH USAGE
+Run the shell by typing:
+.RS
+.B ./hsh
+.RE
+Then enter commands at the prompt.
+
+.SH AUTHOR
+Written by Marivellisse Garcia  as part of the Holberton School curriculum.
+
+.SH BUGS
+No known bugs. Report issues to the project repository.
+
+.SH SEE ALSO
+.BR sh (1),
+.BR bash (1),
+.BR execve (2),
+.BR fork (2),
+.BR wait (2),
+.BR getenv (3)
+
+
